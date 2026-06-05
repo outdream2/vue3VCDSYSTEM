@@ -166,13 +166,20 @@ const pollActivePanels = async () => {
 
     activePanels.value = data.panels
 
-    const newIds = data.panels.map((panel: ActivePanel) => panel.id).sort((a, b) => a - b)
-    const prevIds = sequencePanelIds.value.slice().sort((a, b) => a - b)
+    const newIds = data.panels.map((panel: ActivePanel) => panel.id).sort((a: number, b: number) => a - b)
+    const prevIds = sequencePanelIds.value.slice().sort((a: number, b: number) => a - b)
     const idsChanged = JSON.stringify(newIds) !== JSON.stringify(prevIds)
 
-    sequencePanelIds.value = data.panels.map((panel: ActivePanel) => panel.id)
+    // Only assign a new array when the contents actually changed — keeps the reference
+    // stable for poll cycles where serialization changed but IDs are the same order shift
+    if (idsChanged) {
+      sequencePanelIds.value = data.panels.map((panel: ActivePanel) => panel.id)
+    }
 
-    if (data.panels.length > 0 && idsChanged) {
+    if (data.panels.length === 0) {
+      // External DELETE or server-side clear: reset operation state so 3D overlay clears
+      isOperationActive.value = false
+    } else if (idsChanged) {
       sequenceId.value += 1
       isOperationActive.value = true
     }

@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineOptions, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { defineOptions, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
@@ -81,7 +81,6 @@ const camX = ref(0)
 const camZ = ref(0)
 const blinkingIds = ref<number[]>([])
 
-const activePanelKey = computed(() => props.activePanelIds.join(','))
 const keys: Record<string, boolean> = {}
 const modelMap = new Map<GlbKey | 'floor' | 'ceiling', THREE.Group>()
 const boxMap = new Map<GlbKey | 'floor' | 'ceiling', THREE.Box3>()
@@ -807,6 +806,20 @@ watch(() => props.sequenceId, () => {
 watch(() => props.resetTrigger, (val, prev) => {
   if (prev !== undefined && val !== prev) goHome()
 })
+
+// When activePanelIds is cleared externally (e.g. DELETE /api/active-panels without
+// going through triggerHardware('OFF')), stop the blink overlay and path arrows so
+// the 3D view matches the now-empty banner and 2D floor plan.
+watch(
+  () => props.activePanelIds.length,
+  (len) => {
+    if (len === 0 && blinkingIds.value.length > 0) {
+      cleanupSequence?.()
+      blinkingIds.value = []
+      clearArrows()
+    }
+  },
+)
 </script>
 
 <style scoped>
