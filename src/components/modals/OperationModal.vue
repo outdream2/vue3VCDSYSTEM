@@ -1,15 +1,15 @@
 <template>
-  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[1800px]' : 'max-w-[3000px]'">
-    <div class="shrink-0 border-b border-slate-200 bg-slate-50 p-6">
-      <div class="flex items-center gap-4">
-        <div class="flex h-12 w-12 items-center justify-center rounded-full border-2 border-blue-200 bg-blue-100 text-blue-600 shadow-sm">
-          <PlayIcon v-if="isStart" class="h-6 w-6" />
-          <HandIcon v-else-if="isManual" class="h-7 w-7" />
-          <CheckIcon v-else class="h-7 w-7" />
+  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[720px]' : 'max-w-[1300px]'">
+    <div class="shrink-0 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/50 p-8">
+      <div class="flex items-center gap-6">
+        <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-200">
+          <PlayIcon v-if="isStart" class="h-10 w-10" />
+          <HandIcon v-else-if="isManual" class="h-10 w-10" />
+          <CheckIcon v-else class="h-10 w-10" />
         </div>
-        <div>
+        <div class="min-w-0">
           <h2 class="text-5xl font-black text-slate-950">{{ modalTitle }}</h2>
-          <div class="text-[28px] font-bold text-slate-500">{{ modalSubtitle }}</div>
+          <div class="mt-1 text-[26px] font-semibold text-slate-400">{{ modalSubtitle }}</div>
         </div>
       </div>
     </div>

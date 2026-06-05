@@ -10,7 +10,8 @@
       "Bash(pkill -f \"node server.js\")",
       "PowerShell(netstat *)",
       "Bash(npx tsc *)",
-      "Bash(curl *)"
+      "Bash(curl *)",
+      "Bash(PowerShell -Command \"Get-Process -Name 'node' -ErrorAction SilentlyContinue | Stop-Process -Force\")"
     ]
   }
 }

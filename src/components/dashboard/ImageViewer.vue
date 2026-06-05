@@ -24,12 +24,14 @@ withDefaults(
     alertPanels?: AlertPanel[]
     sequenceId?: number
     isOperationActive?: boolean
+    resetTrigger?: number
   }>(),
   {
     activePanelIds: () => [],
     alertPanels: () => [],
     sequenceId: 0,
     isOperationActive: false,
+    resetTrigger: 0,
   }
 )
 
@@ -50,6 +52,7 @@ defineEmits<{
       :active-panel-ids="activePanelIds"
       :sequence-id="sequenceId"
       :is-operation-active="isOperationActive"
+      :reset-trigger="resetTrigger"
       @camera-update="(pos) => $emit('cameraUpdate', pos)"
       @sequence-done="() => $emit('sequenceDone')"
     />

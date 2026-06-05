@@ -1,14 +1,14 @@
 <template>
-  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/65 p-6 backdrop-blur-sm">
+  <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-8 backdrop-blur-md">
     <div :class="[
-      'relative flex max-h-[1900px] w-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl',
+      'relative flex max-h-[2100px] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_32px_100px_rgba(0,0,0,0.55),0_0_0_1px_rgba(0,0,0,0.06)]',
       className
     ]">
       <button
         v-if="showClose"
         type="button"
         @click="onClose"
-        class="absolute right-8 top-8 z-10 rounded-lg border border-slate-200 bg-white p-4 text-slate-600 shadow-sm hover:bg-slate-100"
+        class="absolute right-8 top-8 z-10 flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-500 transition hover:bg-slate-200 hover:text-slate-800"
         aria-label="Close"
       >
         <XIcon class="h-10 w-10" />
@@ -31,7 +31,7 @@ interface Props {
 
 // Applying identical default parameters as the original structural layout
 withDefaults(defineProps<Props>(), {
-  className: 'max-w-[2000px]',
+  className: 'max-w-[900px]',
   showClose: true
 })
 </script>

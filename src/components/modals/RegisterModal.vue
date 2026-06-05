@@ -1,5 +1,5 @@
 <template>
-  <ModalShell :onClose="onClose" class-name="max-w-[2000px]">
+  <ModalShell :onClose="onClose" class-name="max-w-[900px]">
     <form class="overflow-y-auto bg-slate-50 p-8" @submit.prevent="submit">
       <div class="mb-6 text-center">
         <h2 class="text-5xl font-bold">조작 등록</h2>

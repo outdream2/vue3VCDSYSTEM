@@ -14,6 +14,7 @@
         :alertPanels="activePanels"
         :sequenceId="sequenceId"
         :isOperationActive="isOperationActive"
+        :resetTrigger="cameraResetTrigger"
         @camera-update="handleCameraUpdate"
         @sequence-done="handleSequenceDone"
       />
@@ -85,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, markRaw, onMounted, onUnmounted } from 'vue'
+import { ref, computed, markRaw, watch, onMounted, onUnmounted } from 'vue'
 import { Bell, CheckCircle, Hand as HandIcon, History as HistoryIcon, Play, Radio, Server, ShieldCheck } from 'lucide-vue-next'
 
 // API Network Core Hooks and Endpoint Interfaces
@@ -120,6 +121,7 @@ const isProgress = (status: string) => status === '진행중' || status === 'м�
 
 // Local Reactive Functional Memory Allocations
 const modal = ref<ModalType>(null)
+const cameraResetTrigger = ref(0)
 const operations = ref<Operation[]>(INITIAL_OPERATIONS)
 const sequencePanelIds = ref<number[]>([])
 const sequenceId = ref(0)
@@ -264,6 +266,8 @@ const alertCount = computed(() => {
 })
 
 const viewerPanelIds = computed(() => sequencePanelIds.value)
+
+watch(modal, () => { cameraResetTrigger.value += 1 })
 
 // FIX: Ikonka obyektlari Vue Proxy kuzatuviga tushib resolveComponent xatosini bermasligi uchun ularga markRaw() to'liq va to'g'ri o'rnatildi
 const communicationStats = computed(() => [

@@ -47,12 +47,14 @@ interface Props {
   activePanelIds?: number[]
   sequenceId?: number
   isOperationActive?: boolean
+  resetTrigger?: number
 }
 
 const props = withDefaults(defineProps<Props>(), {
   activePanelIds: () => [],
   sequenceId: 0,
   isOperationActive: false,
+  resetTrigger: 0,
 })
 
 const emit = defineEmits<{
@@ -779,8 +781,27 @@ onBeforeUnmount(() => {
   renderer?.dispose()
 })
 
+function goHome() {
+  cleanupSequence?.()
+  sequenceRunning = false
+  moving.value = false
+  blinkingIds.value = []
+  clearArrows()
+  if (camera) {
+    gsap.killTweensOf(camera.position)
+    gsap.killTweensOf(target)
+    camera.position.set(-9, 4.0, 0)
+    target.set(40, 2.8, 0)
+    camera.lookAt(target)
+  }
+}
+
 watch([() => props.sequenceId, activePanelKey], () => {
   void runSequence()
+})
+
+watch(() => props.resetTrigger, (val, prev) => {
+  if (prev !== undefined && val !== prev) goHome()
 })
 </script>
 
