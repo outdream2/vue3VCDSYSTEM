@@ -142,6 +142,7 @@ const actionIcons = {
 // Tracking buffers preventing redundant view mutations on repetitive incoming network data frames
 const lastActivePanelsSerialized = ref('[]')
 let pollIntervalId: ReturnType<typeof setInterval> | null = null
+let suppressPoll = false
 
 // Re-computes and syncs centralized active process records with local memory state
 const refreshOperations = async () => {
@@ -155,6 +156,7 @@ const refreshOperations = async () => {
 
 // Background Network Sync Daemon Cycle Poller matching original React implementation
 const pollActivePanels = async () => {
+  if (suppressPoll) return
   try {
     const response = await fetch('/api/active-panels')
     const data = await response.json()
@@ -262,11 +264,13 @@ const finishOperations = async (selectedOperations: Operation[]) => {
 
 // Clears cached tracking segments cleanly upon visual loop sequence completion
 const handleSequenceDone = async () => {
+  suppressPoll = true
   sequencePanelIds.value = []
   activePanels.value = []
   isOperationActive.value = false
-  lastActivePanelsSerialized.value = '[]'
   try { await clearActivePanels() } catch { /* best effort */ }
+  lastActivePanelsSerialized.value = '[]'
+  suppressPoll = false
 }
 
 const handleCameraUpdate = (position: CameraPosition) => {
