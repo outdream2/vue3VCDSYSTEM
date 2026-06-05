@@ -43,7 +43,7 @@ const mapX2D = (z: number) => 1700 + z * 195
 const mapY2D = (x: number) => x >= 11 ? 260 + (35 - x) * normalScale : 260 + (35 - 11) * normalScale + (11 - x) * 25
 const cameraMarker = computed(() => ({
   x: width / 2,
-  y: Math.min(height - 80, Math.max(260, 260 + (35 - props.cameraPosition.x) * normalScale)),
+  y: Math.min(height - 80, Math.max(260, 260 + (35 - props.cameraPosition.x) * 151)),
 }))
 const info = (id: number) => PANEL_DATA.find((panel) => panel.id === id)
 </script>
