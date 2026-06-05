@@ -18,6 +18,11 @@ import { PANEL_DATA as SHARED_PANEL_DATA } from '../../data/panels'
 
 type GlbKey = 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
 
+// Module-scope GLB cache: survives component remounts so models are never re-fetched
+const _modelCache = new Map<GlbKey | 'floor' | 'ceiling', THREE.Group>()
+const _boxCache = new Map<GlbKey | 'floor' | 'ceiling', THREE.Box3>()
+let _modelsLoaded = false
+
 interface PanelInfo {
   glbKey: GlbKey
   unitId: string
@@ -82,8 +87,8 @@ const camZ = ref(0)
 const blinkingIds = ref<number[]>([])
 
 const keys: Record<string, boolean> = {}
-const modelMap = new Map<GlbKey | 'floor' | 'ceiling', THREE.Group>()
-const boxMap = new Map<GlbKey | 'floor' | 'ceiling', THREE.Box3>()
+const modelMap = _modelCache
+const boxMap = _boxCache
 const overlayMaterials: Array<{ panelId: number; material: THREE.MeshBasicMaterial }> = []
 const arrowObjects: ArrowInstance[] = []
 
@@ -231,6 +236,7 @@ async function loadModel(key: GlbKey | 'floor' | 'ceiling') {
 }
 
 async function loadModels() {
+  if (_modelsLoaded) return
   await Promise.all([
     loadModel('A'),
     loadModel('B'),
@@ -242,6 +248,7 @@ async function loadModels() {
     loadModel('floor'),
     loadModel('ceiling'),
   ])
+  _modelsLoaded = true
 }
 
 function addRoom() {
