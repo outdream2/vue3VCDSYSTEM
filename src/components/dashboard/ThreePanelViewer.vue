@@ -524,9 +524,8 @@ function createArrow(position: [number, number, number], targetPos: [number, num
   group.position.set(...position)
   group.lookAt(...targetPos)
 
-  const color = 0xff3333
-  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
-  const matGlow = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+  const color = 0xff2222
+  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.90, side: THREE.DoubleSide, depthWrite: false })
 
   const armLen = 0.34
   const armW = 0.08
@@ -560,20 +559,11 @@ function createArrow(position: [number, number, number], targetPos: [number, num
     lc.rotation.x = Math.PI / 2; lc.rotation.z = -Math.PI / 4
     lc.position.set(-offset, 0.004, cz)
     group.add(lc)
-    const lg = new THREE.Mesh(geo, matGlow)
-    lg.rotation.x = Math.PI / 2; lg.rotation.z = -Math.PI / 4
-    lg.scale.setScalar(2.1); lg.position.set(-offset, 0.001, cz)
-    group.add(lg)
 
-    // Right arm: +Y maps to (-X,+Z) in group space → rotation.z = +PI/4
     const rc = new THREE.Mesh(geo, matCore)
     rc.rotation.x = Math.PI / 2; rc.rotation.z = Math.PI / 4
     rc.position.set(offset, 0.004, cz)
     group.add(rc)
-    const rg = new THREE.Mesh(geo, matGlow)
-    rg.rotation.x = Math.PI / 2; rg.rotation.z = Math.PI / 4
-    rg.scale.setScalar(2.1); rg.position.set(offset, 0.001, cz)
-    group.add(rg)
   })
 
   return { group, material: matCore, index }
