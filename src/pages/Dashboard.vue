@@ -228,6 +228,7 @@ const triggerHardware = async (selectedOperations: Operation[], status: 'ON' | '
     sequencePanelIds.value = []
     activePanels.value = []
     isOperationActive.value = false
+    cameraResetTrigger.value += 1
   }
 }
 
@@ -276,7 +277,6 @@ const alertCount = computed(() => {
 const viewerPanelIds = computed(() => sequencePanelIds.value)
 
 watch(modal, (newVal) => {
-  cameraResetTrigger.value += 1
   if (newVal !== null) void refreshOperations()
 })
 
