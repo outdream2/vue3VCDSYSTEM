@@ -37,7 +37,7 @@ const width = 3400
 const height = 7000
 const normalScale = 270
 const panelWidth = 1120
-const panelHeight = 480
+const panelHeight = 560
 const selected = computed(() => new Set(props.targetPanelIds))
 const mapX2D = (z: number) => 1700 + z * 195
 const mapY2D = (x: number) => x >= 11 ? 260 + (35 - x) * normalScale : 260 + (35 - 11) * normalScale + (11 - x) * 25
