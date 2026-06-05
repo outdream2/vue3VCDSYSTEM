@@ -213,7 +213,6 @@
       >
         <PlayIcon v-if="isStart" class="h-6 w-6" />
         <HandIcon v-else-if="isManual" class="h-6 w-6" />
-        <CheckIcon v-else class="h-6 w-6" />
         {{ confirmLabel }}
       </button>
     </div>
