@@ -261,8 +261,12 @@ const finishOperations = async (selectedOperations: Operation[]) => {
 }
 
 // Clears cached tracking segments cleanly upon visual loop sequence completion
-const handleSequenceDone = () => {
-  // 시퀀스 애니메이션 완료 — 하이라이트는 조작완료 시까지 유지
+const handleSequenceDone = async () => {
+  sequencePanelIds.value = []
+  activePanels.value = []
+  isOperationActive.value = false
+  lastActivePanelsSerialized.value = '[]'
+  try { await clearActivePanels() } catch { /* best effort */ }
 }
 
 const handleCameraUpdate = (position: CameraPosition) => {
