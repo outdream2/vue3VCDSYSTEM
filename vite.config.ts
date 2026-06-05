@@ -13,6 +13,7 @@ export default defineConfig({
     watch: {
       usePolling: true,
       interval: 100,
+      ignored: ['**/panels-state.json'],
     },
   },
   build: {
