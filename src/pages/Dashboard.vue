@@ -293,6 +293,12 @@ const viewerPanelIds = computed(() => sequencePanelIds.value)
 
 watch(modal, (newVal) => {
   cameraResetTrigger.value += 1
+  suppressPoll = true
+  sequencePanelIds.value = []
+  activePanels.value = []
+  isOperationActive.value = false
+  lastActivePanelsSerialized.value = '[]'
+  suppressPoll = false
   if (newVal !== null) void refreshOperations()
 })
 
