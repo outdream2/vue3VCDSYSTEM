@@ -292,6 +292,7 @@ const alertCount = computed(() => {
 const viewerPanelIds = computed(() => sequencePanelIds.value)
 
 watch(modal, (newVal) => {
+  cameraResetTrigger.value += 1
   if (newVal !== null) void refreshOperations()
 })
 
