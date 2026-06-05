@@ -263,6 +263,7 @@
 import { computed, defineComponent, h, ref, type Component } from 'vue'
 import { Check as CheckIcon, Hand as HandIcon, Info as InfoIcon, Play as PlayIcon, QrCode as QrCodeIcon, Search as SearchIcon, User as UserIcon, Users as UsersIcon, Wrench as WrenchIcon, X as XIcon } from 'lucide-vue-next'
 import { MOCK_KEY_STATUS, MOCK_TEAMS, TEAM_DATA } from '../../data/mockData'
+import { getPanelByUnitId } from '../../data/panels'
 import type { Operation } from '../../types'
 import StatusBadge from '../ui/StatusBadge.vue'
 import ModalShell from './ModalShell.vue'
@@ -379,7 +380,7 @@ const filteredManualPanels = computed(() => {
 
 const fallbackOperations = (count: number) => MOCK_KEY_STATUS.slice(0, count).map((item, index) => ({
     id: index + 1,
-    panelId: index + 1,
+    panelId: getPanelByUnitId(item.unitId)?.id ?? index + 1,
     unitId: item.unitId,
     equipName: item.equipName,
     opType: item.status === 'KEY_ALERT' ? 'KEY ALERT' : item.status === 'KEY_OPEN' ? 'KEY OPEN' : 'KEY CLOSED',
