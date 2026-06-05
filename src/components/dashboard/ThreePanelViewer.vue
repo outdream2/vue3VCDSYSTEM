@@ -520,60 +520,50 @@ function clearArrows() {
 }
 
 function createArrow(position: [number, number, number], targetPos: [number, number, number], index: number): ArrowInstance {
+  const shape = new THREE.Shape()
+  shape.moveTo(0, 0.46)
+  shape.lineTo(0.34, -0.04)
+  shape.lineTo(0.18, -0.04)
+  shape.lineTo(0.18, -0.40)
+  shape.lineTo(-0.18, -0.40)
+  shape.lineTo(-0.18, -0.04)
+  shape.lineTo(-0.34, -0.04)
+  shape.closePath()
+
+  const geo = new THREE.ShapeGeometry(shape)
+
+  // outer glow halo
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: 0x00ccff,
+    transparent: true,
+    opacity: 0.18,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+  const glowMesh = new THREE.Mesh(geo, glowMat)
+  glowMesh.scale.setScalar(2.2)
+  glowMesh.rotation.x = Math.PI / 2
+
+  // bright core
+  const coreMat = new THREE.MeshBasicMaterial({
+    color: 0x00e5ff,
+    transparent: true,
+    opacity: 0.92,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+  const coreMesh = new THREE.Mesh(geo, coreMat)
+  coreMesh.rotation.x = Math.PI / 2
+  coreMesh.position.y = 0.003
+
   const group = new THREE.Group()
   group.position.set(...position)
   group.lookAt(...targetPos)
-
-  const color = 0xff3333
-  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.92, side: THREE.DoubleSide, depthWrite: false })
-  const matGlow = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.20, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
-
-  const armLen = 0.34
-  const armW = 0.08
-  const armR = armW / 2
-  const half = armLen / 2
-  const offset = half * 0.707
-
-  function makeArmGeo(): THREE.ShapeGeometry {
-    const s = new THREE.Shape()
-    const hw = armW / 2
-    s.moveTo(-hw + armR, -half)
-    s.lineTo(hw - armR, -half)
-    s.quadraticCurveTo(hw, -half, hw, -half + armR)
-    s.lineTo(hw, half - armR)
-    s.quadraticCurveTo(hw, half, hw - armR, half)
-    s.lineTo(-hw + armR, half)
-    s.quadraticCurveTo(-hw, half, -hw, half - armR)
-    s.lineTo(-hw, -half + armR)
-    s.quadraticCurveTo(-hw, -half, -hw + armR, -half)
-    s.closePath()
-    return new THREE.ShapeGeometry(s, 6)
-  }
-
-  ;[0.24, 0.02].forEach((tipZ) => {
-    const geo = makeArmGeo()
-    const cz = tipZ - offset
-
-    const lc = new THREE.Mesh(geo, matCore)
-    lc.rotation.x = Math.PI / 2; lc.rotation.z = -Math.PI / 4
-    lc.position.set(-offset, 0.004, cz)
-    group.add(lc)
-    const lg = new THREE.Mesh(geo, matGlow)
-    lg.rotation.x = Math.PI / 2; lg.rotation.z = -Math.PI / 4
-    lg.scale.setScalar(2.1); lg.position.set(-offset, 0.001, cz)
-    group.add(lg)
-
-    const rc = new THREE.Mesh(geo, matCore)
-    rc.rotation.x = Math.PI / 2; rc.rotation.z = Math.PI / 4
-    rc.position.set(offset, 0.004, cz)
-    group.add(rc)
-    const rg = new THREE.Mesh(geo, matGlow)
-    rg.rotation.x = Math.PI / 2; rg.rotation.z = Math.PI / 4
-    rg.scale.setScalar(2.1); rg.position.set(offset, 0.001, cz)
-    group.add(rg)
-  })
-
-  return { group, material: matCore, index }
+  group.add(glowMesh)
+  group.add(coreMesh)
+  return { group, material: coreMat, index }
 }
 
 function computeArrows(startPos: THREE.Vector3, panelPos: [number, number, number]): Arrow[] {
