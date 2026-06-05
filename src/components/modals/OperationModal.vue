@@ -1,5 +1,5 @@
 <template>
-  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[1440px]' : 'max-w-[1300px]'">
+  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[1580px]' : 'max-w-[1440px]'">
     <div class="shrink-0 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/50 p-8">
       <div class="flex items-center gap-6">
         <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-200">
