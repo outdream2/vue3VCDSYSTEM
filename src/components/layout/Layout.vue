@@ -1,9 +1,9 @@
 <template>
   <div class="min-h-screen bg-slate-50">
-    <main class="min-h-screen p-4 transition-all duration-300">
+    <main class="min-h-screen p-4">
       <RouterView v-slot="{ Component }">
-        <KeepAlive>
-          <component :is="Component" />
+        <KeepAlive include="Dashboard">
+          <component :is="Component" v-if="Component" />
         </KeepAlive>
       </RouterView>
     </main>
