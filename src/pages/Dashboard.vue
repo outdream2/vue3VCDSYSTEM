@@ -275,7 +275,10 @@ const alertCount = computed(() => {
 
 const viewerPanelIds = computed(() => sequencePanelIds.value)
 
-watch(modal, () => { cameraResetTrigger.value += 1 })
+watch(modal, (newVal) => {
+  cameraResetTrigger.value += 1
+  if (newVal !== null) void refreshOperations()
+})
 
 // FIX: Ikonka obyektlari Vue Proxy kuzatuviga tushib resolveComponent xatosini bermasligi uchun ularga markRaw() to'liq va to'g'ri o'rnatildi
 const communicationStats = computed(() => [
