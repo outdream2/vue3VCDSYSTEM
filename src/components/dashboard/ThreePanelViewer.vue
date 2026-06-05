@@ -520,25 +520,63 @@ function clearArrows() {
 }
 
 function createArrow(position: [number, number, number], targetPos: [number, number, number], index: number): ArrowInstance {
-  const shape = new THREE.Shape()
-  shape.moveTo(0, 0.3)
-  shape.lineTo(0.2, -0.1)
-  shape.lineTo(0.08, -0.1)
-  shape.lineTo(0.08, -0.4)
-  shape.lineTo(-0.08, -0.4)
-  shape.lineTo(-0.08, -0.1)
-  shape.lineTo(-0.2, -0.1)
-  shape.closePath()
-
-  const material = new THREE.MeshBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false })
-  const mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material)
-  mesh.rotation.x = Math.PI / 2
-
   const group = new THREE.Group()
   group.position.set(...position)
   group.lookAt(...targetPos)
-  group.add(mesh)
-  return { group, material, index }
+
+  const color = 0xff3333
+  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.92, side: THREE.DoubleSide, depthWrite: false })
+  const matGlow = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.20, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+
+  const armLen = 0.34
+  const armW = 0.08
+  const armR = armW / 2
+  const half = armLen / 2
+  const offset = half * 0.707  // 45° projection ≈ 0.120
+
+  function makeArmGeo(): THREE.ShapeGeometry {
+    const s = new THREE.Shape()
+    const hw = armW / 2
+    s.moveTo(-hw + armR, -half)
+    s.lineTo(hw - armR, -half)
+    s.quadraticCurveTo(hw, -half, hw, -half + armR)
+    s.lineTo(hw, half - armR)
+    s.quadraticCurveTo(hw, half, hw - armR, half)
+    s.lineTo(-hw + armR, half)
+    s.quadraticCurveTo(-hw, half, -hw, half - armR)
+    s.lineTo(-hw, -half + armR)
+    s.quadraticCurveTo(-hw, -half, -hw + armR, -half)
+    s.closePath()
+    return new THREE.ShapeGeometry(s, 6)
+  }
+
+  // Double chevron: front tip at z=0.24, back tip at z=0.02
+  ;[0.24, 0.02].forEach((tipZ) => {
+    const geo = makeArmGeo()
+    const cz = tipZ - offset
+
+    // Left arm: +Y maps to (+X,+Z) in group space → rotation.z = -PI/4
+    const lc = new THREE.Mesh(geo, matCore)
+    lc.rotation.x = Math.PI / 2; lc.rotation.z = -Math.PI / 4
+    lc.position.set(-offset, 0.004, cz)
+    group.add(lc)
+    const lg = new THREE.Mesh(geo, matGlow)
+    lg.rotation.x = Math.PI / 2; lg.rotation.z = -Math.PI / 4
+    lg.scale.setScalar(2.1); lg.position.set(-offset, 0.001, cz)
+    group.add(lg)
+
+    // Right arm: +Y maps to (-X,+Z) in group space → rotation.z = +PI/4
+    const rc = new THREE.Mesh(geo, matCore)
+    rc.rotation.x = Math.PI / 2; rc.rotation.z = Math.PI / 4
+    rc.position.set(offset, 0.004, cz)
+    group.add(rc)
+    const rg = new THREE.Mesh(geo, matGlow)
+    rg.rotation.x = Math.PI / 2; rg.rotation.z = Math.PI / 4
+    rg.scale.setScalar(2.1); rg.position.set(offset, 0.001, cz)
+    group.add(rg)
+  })
+
+  return { group, material: matCore, index }
 }
 
 function computeArrows(startPos: THREE.Vector3, panelPos: [number, number, number]): Arrow[] {
