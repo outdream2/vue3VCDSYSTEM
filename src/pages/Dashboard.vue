@@ -257,7 +257,6 @@ const saveOperationRecords = async (selectedOperations: Operation[], worker: str
 
 // Terminates active hardware signaling sequences clearing global processes
 const finishOperations = async (selectedOperations: Operation[]) => {
-  await triggerHardware(selectedOperations, 'OFF')
   await completeOperations(selectedOperations.map((op) => op.id))
   await refreshOperations()
 }
