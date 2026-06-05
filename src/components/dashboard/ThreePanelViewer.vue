@@ -525,35 +525,42 @@ function createArrow(position: [number, number, number], targetPos: [number, num
   group.lookAt(...targetPos)
 
   const material = new THREE.MeshBasicMaterial({ color: 0xdd1111, transparent: true, opacity: 0.92, side: THREE.DoubleSide, depthWrite: false })
-  const matGlow = new THREE.MeshBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.07, side: THREE.DoubleSide, depthWrite: false })
 
-  // Sleek teardrop arrow — curved tip forward, tapered tail
-  const core = new THREE.Shape()
-  core.moveTo(0, 0.42)
-  core.quadraticCurveTo(0.17, 0.12, 0.14, -0.08)
-  core.quadraticCurveTo(0.09, -0.26, 0, -0.32)
-  core.quadraticCurveTo(-0.09, -0.26, -0.14, -0.08)
-  core.quadraticCurveTo(-0.17, 0.12, 0, 0.42)
-  core.closePath()
+  const armLen = 0.38
+  const armW = 0.10
+  const r = armW / 2
+  const half = armLen / 2
+  const offset = half * 0.707
 
-  const mesh = new THREE.Mesh(new THREE.ShapeGeometry(core, 8), material)
-  mesh.rotation.x = Math.PI / 2
-  mesh.position.y = 0.004
-  group.add(mesh)
+  function makeArm(): THREE.ShapeGeometry {
+    const s = new THREE.Shape()
+    const hw = armW / 2
+    s.moveTo(-hw + r, -half)
+    s.lineTo(hw - r, -half)
+    s.quadraticCurveTo(hw, -half, hw, -half + r)
+    s.lineTo(hw, half - r)
+    s.quadraticCurveTo(hw, half, hw - r, half)
+    s.lineTo(-hw + r, half)
+    s.quadraticCurveTo(-hw, half, -hw, half - r)
+    s.lineTo(-hw, -half + r)
+    s.quadraticCurveTo(-hw, -half, -hw + r, -half)
+    s.closePath()
+    return new THREE.ShapeGeometry(s, 6)
+  }
 
-  // Wide soft glow halo behind the core
-  const halo = new THREE.Shape()
-  halo.moveTo(0, 0.60)
-  halo.quadraticCurveTo(0.28, 0.14, 0.22, -0.10)
-  halo.quadraticCurveTo(0.14, -0.36, 0, -0.44)
-  halo.quadraticCurveTo(-0.14, -0.36, -0.22, -0.10)
-  halo.quadraticCurveTo(-0.28, 0.14, 0, 0.60)
-  halo.closePath()
+  ;[0.26, 0.02].forEach((tipZ) => {
+    const cz = tipZ - offset
 
-  const haloMesh = new THREE.Mesh(new THREE.ShapeGeometry(halo, 8), matGlow)
-  haloMesh.rotation.x = Math.PI / 2
-  haloMesh.position.y = 0.001
-  group.add(haloMesh)
+    const lArm = new THREE.Mesh(makeArm(), material)
+    lArm.rotation.x = Math.PI / 2; lArm.rotation.z = -Math.PI / 4
+    lArm.position.set(-offset, 0.004, cz)
+    group.add(lArm)
+
+    const rArm = new THREE.Mesh(makeArm(), material)
+    rArm.rotation.x = Math.PI / 2; rArm.rotation.z = Math.PI / 4
+    rArm.position.set(offset, 0.004, cz)
+    group.add(rArm)
+  })
 
   return { group, material, index }
 }
