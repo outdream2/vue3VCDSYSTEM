@@ -350,7 +350,7 @@ const targetLabel = computed(() => {
 const confirmLabel = computed(() => {
   if (isStart.value) return 'Hardware ON'
   if (isManual.value) return '수동 열림'
-  return 'Hardware OFF'
+  return '확인'
 })
 
 const selectedClass = computed(() => {
