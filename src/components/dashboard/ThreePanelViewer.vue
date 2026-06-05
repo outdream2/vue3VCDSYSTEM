@@ -521,24 +521,49 @@ function clearArrows() {
 
 function createArrow(position: [number, number, number], targetPos: [number, number, number], index: number): ArrowInstance {
   const shape = new THREE.Shape()
-  shape.moveTo(0, 0.3)
-  shape.lineTo(0.2, -0.1)
-  shape.lineTo(0.08, -0.1)
-  shape.lineTo(0.08, -0.4)
-  shape.lineTo(-0.08, -0.4)
-  shape.lineTo(-0.08, -0.1)
-  shape.lineTo(-0.2, -0.1)
+  shape.moveTo(0, 0.46)
+  shape.lineTo(0.34, -0.04)
+  shape.lineTo(0.18, -0.04)
+  shape.lineTo(0.18, -0.40)
+  shape.lineTo(-0.18, -0.40)
+  shape.lineTo(-0.18, -0.04)
+  shape.lineTo(-0.34, -0.04)
   shape.closePath()
 
-  const material = new THREE.MeshBasicMaterial({ color: 0xff3333, transparent: true, opacity: 0.8, side: THREE.DoubleSide, depthWrite: false })
-  const mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material)
-  mesh.rotation.x = Math.PI / 2
+  const geo = new THREE.ShapeGeometry(shape)
+
+  // outer glow halo
+  const glowMat = new THREE.MeshBasicMaterial({
+    color: 0x00ccff,
+    transparent: true,
+    opacity: 0.18,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+  const glowMesh = new THREE.Mesh(geo, glowMat)
+  glowMesh.scale.setScalar(2.2)
+  glowMesh.rotation.x = Math.PI / 2
+
+  // bright core
+  const coreMat = new THREE.MeshBasicMaterial({
+    color: 0x00e5ff,
+    transparent: true,
+    opacity: 0.92,
+    side: THREE.DoubleSide,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  })
+  const coreMesh = new THREE.Mesh(geo, coreMat)
+  coreMesh.rotation.x = Math.PI / 2
+  coreMesh.position.y = 0.003
 
   const group = new THREE.Group()
   group.position.set(...position)
   group.lookAt(...targetPos)
-  group.add(mesh)
-  return { group, material, index }
+  group.add(glowMesh)
+  group.add(coreMesh)
+  return { group, material: coreMat, index }
 }
 
 function computeArrows(startPos: THREE.Vector3, panelPos: [number, number, number]): Arrow[] {
