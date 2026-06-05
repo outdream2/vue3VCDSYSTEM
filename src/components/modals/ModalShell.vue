@@ -1,7 +1,7 @@
 <template>
   <div class="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-8 backdrop-blur-md">
     <div :class="[
-      'relative flex max-h-[2100px] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_32px_100px_rgba(0,0,0,0.55),0_0_0_1px_rgba(0,0,0,0.06)]',
+      'relative flex max-h-[2400px] w-full flex-col overflow-hidden rounded-3xl bg-white shadow-[0_32px_100px_rgba(0,0,0,0.55),0_0_0_1px_rgba(0,0,0,0.06)]',
       className
     ]">
       <button
