@@ -524,9 +524,9 @@ function createArrow(position: [number, number, number], targetPos: [number, num
   group.position.set(...position)
   group.lookAt(...targetPos)
 
-  const color = 0xff3333
-  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.88, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
-  const matGlow = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.13, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
+  const color = 0xcc2222
+  const matCore = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.45, side: THREE.DoubleSide, depthWrite: false })
+  const matGlow = new THREE.MeshBasicMaterial({ color, transparent: true, opacity: 0.10, side: THREE.DoubleSide, depthWrite: false, blending: THREE.AdditiveBlending })
 
   const armLen = 0.34
   const armW = 0.08

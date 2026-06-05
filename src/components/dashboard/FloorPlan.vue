@@ -41,10 +41,13 @@ const panelHeight = 560
 const selected = computed(() => new Set(props.targetPanelIds))
 const mapX2D = (z: number) => 1700 + z * 195
 const mapY2D = (x: number) => x >= 11 ? 260 + (35 - x) * normalScale : 260 + (35 - 11) * normalScale + (11 - x) * 25
-const mapCameraY2D = (x: number) => x >= 11 ? mapY2D(x) : height - 80
+const mapCameraY2D = (x: number) => {
+  const t = Math.max(0, Math.min(1, (35 - x) / 44))
+  return 260 + t * (height - 340)
+}
 const cameraMarker = computed(() => ({
   x: width / 2,
-  y: Math.min(height - 80, Math.max(220, mapCameraY2D(props.cameraPosition.x))),
+  y: mapCameraY2D(props.cameraPosition.x),
 }))
 const info = (id: number) => PANEL_DATA.find((panel) => panel.id === id)
 </script>
