@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, defineOptions, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import * as THREE from 'three'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import { HDRLoader } from 'three/examples/jsm/loaders/HDRLoader.js'
@@ -42,6 +42,8 @@ interface ArrowInstance {
   material: THREE.MeshBasicMaterial
   index: number
 }
+
+defineOptions({ name: 'ThreePanelViewer' })
 
 interface Props {
   activePanelIds?: number[]
@@ -373,21 +375,23 @@ function addKoenDisplay() {
 
 function createTextTexture(unitId: string, name: string) {
   const canvas = document.createElement('canvas')
-  canvas.width = 1024
-  canvas.height = 512
+  canvas.width = 2048
+  canvas.height = 1024
   const ctx = canvas.getContext('2d')!
   ctx.clearRect(0, 0, canvas.width, canvas.height)
   ctx.fillStyle = '#08111e'
   ctx.textAlign = 'center'
   ctx.textBaseline = 'middle'
-  ctx.font = '900 72px Arial'
-  ctx.fillText(unitId, canvas.width / 2, 190)
+  ctx.font = '900 144px Arial'
+  ctx.fillText(unitId, canvas.width / 2, 380)
   ctx.fillStyle = '#243245'
-  ctx.font = '700 46px Arial'
-  ctx.fillText(name.slice(0, 28), canvas.width / 2, 300)
+  ctx.font = '700 92px Arial'
+  ctx.fillText(name.slice(0, 28), canvas.width / 2, 600)
 
   const texture = new THREE.CanvasTexture(canvas)
   texture.colorSpace = THREE.SRGBColorSpace
+  texture.minFilter = THREE.LinearFilter
+  texture.generateMipmaps = false
   return texture
 }
 
@@ -676,8 +680,8 @@ function tweenCamera(position: THREE.Vector3, targetVector: THREE.Vector3, durat
         resolve()
       },
     })
-    timeline.to(camera.position, { duration, ease: 'power2.inOut', x: position.x, y: position.y, z: position.z }, 0)
-    timeline.to(target, { duration, ease: 'power2.inOut', x: targetVector.x, y: targetVector.y, z: targetVector.z }, 0)
+    timeline.to(camera.position, { duration, ease: 'power3.inOut', x: position.x, y: position.y, z: position.z }, 0)
+    timeline.to(target, { duration, ease: 'power3.inOut', x: targetVector.x, y: targetVector.y, z: targetVector.z }, 0)
   })
 }
 
@@ -728,11 +732,11 @@ async function runSequence() {
 
     showArrows(arrows)
     await wait(300)
-    await tweenCamera(new THREE.Vector3(location.x, location.y, location.camZ), new THREE.Vector3(location.x, location.y, location.z), 4.5)
+    await tweenCamera(new THREE.Vector3(location.x, location.y, location.camZ), new THREE.Vector3(location.x, location.y, location.z), 6.0)
     if (cancelled) return
     clearArrows()
     await wait(2000)
-    await tweenCamera(new THREE.Vector3(-6, 4.0, 0), new THREE.Vector3(40, 2.8, 0), 3.5)
+    await tweenCamera(new THREE.Vector3(-9, 4.0, 0), new THREE.Vector3(40, 2.8, 0), 6.0)
     if (cancelled) return
   }
 
@@ -796,7 +800,7 @@ function goHome() {
   }
 }
 
-watch([() => props.sequenceId, activePanelKey], () => {
+watch(() => props.sequenceId, () => {
   void runSequence()
 })
 

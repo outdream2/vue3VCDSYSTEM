@@ -4,6 +4,7 @@ export interface ActivePanel {
   id: number
   status: string
   description: string
+  equipName?: string
 }
 
 export async function fetchOperations(status?: string) {

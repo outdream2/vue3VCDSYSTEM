@@ -1,16 +1,29 @@
 <template>
   <section class="shrink-0 overflow-hidden rounded-xl border-2 border-sky-200 bg-white shadow-sm">
-    <div class="flex items-center gap-2 px-3 py-2">
-      <span class="text-[16px] font-black tracking-wider text-slate-500 shrink-0">통신상태</span>
-      <div class="flex flex-wrap gap-1.5">
-        <div
-          v-for="item in connectionIndicators"
-          :key="item.key"
-          class="flex items-center gap-1.5 whitespace-nowrap rounded-full bg-slate-50 px-2 text-[16px] font-black uppercase text-slate-700 ring-1 ring-slate-200 h-7"
-          :title="item.message"
-        >
-          <span :class="['h-3 w-3 shrink-0 rounded-full', item.ok ? 'bg-emerald-500' : 'bg-red-500']"></span>
-          <span>{{ item.label }}</span>
+    <div class="px-3 py-2">
+      <span class="mb-2 block text-[15px] font-black tracking-widest text-slate-400 uppercase">통신상태</span>
+      <div class="flex flex-col gap-1.5">
+        <div class="flex gap-1.5">
+          <div
+            v-for="item in connectionIndicators.slice(0, 3)"
+            :key="item.key"
+            class="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-slate-50 px-2 text-[15px] font-black uppercase text-slate-700 ring-1 ring-slate-200 h-7"
+            :title="item.message"
+          >
+            <span :class="['h-2.5 w-2.5 shrink-0 rounded-full', item.ok ? 'bg-emerald-500' : 'bg-red-500']"></span>
+            <span>{{ item.label }}</span>
+          </div>
+        </div>
+        <div class="flex gap-1.5">
+          <div
+            v-for="item in connectionIndicators.slice(3)"
+            :key="item.key"
+            class="flex flex-1 items-center justify-center gap-1.5 whitespace-nowrap rounded-full bg-slate-50 px-2 text-[15px] font-black uppercase text-slate-700 ring-1 ring-slate-200 h-7"
+            :title="item.message"
+          >
+            <span :class="['h-2.5 w-2.5 shrink-0 rounded-full', item.ok ? 'bg-emerald-500' : 'bg-red-500']"></span>
+            <span>{{ item.label }}</span>
+          </div>
         </div>
       </div>
     </div>

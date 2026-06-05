@@ -9,14 +9,14 @@
 
       <label class="mb-4 block rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <span class="mb-2 block text-[28px] font-semibold">작업 부서 <b class="text-red-500">*</b></span>
-        <select v-model="department" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+        <select v-model="department" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
           <option v-for="team in MOCK_TEAMS" :key="team" :value="team">{{ team }}</option>
         </select>
       </label>
 
       <label class="mb-4 block rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
         <span class="mb-2 block text-[28px] font-semibold">작업요청사유 <b class="text-red-500">*</b></span>
-        <select v-model="reason" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+        <select v-model="reason" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
           <option v-for="item in MOCK_REASONS" :key="item" :value="item">{{ item }}</option>
         </select>
       </label>
@@ -25,7 +25,7 @@
         <div class="mb-3 text-[28px] font-semibold">차단기 선택 <b class="text-red-500">*</b></div>
         <div class="grid grid-cols-2 gap-3">
           <button type="button" @click="scanOpen = true" class="flex h-12 items-center justify-center gap-2 rounded-lg border-2 border-blue-600 bg-white font-black text-blue-700 shadow-sm transition hover:bg-blue-50">
-            <QrCodeIcon class="h-5 w-5" />QR 스캔
+            <QrCodeIcon class="h-5 w-5" />바코드 스캔
           </button>
           <button type="button" @click="openSearch" :class="[
             'flex h-12 items-center justify-center gap-2 rounded-lg border-2 font-black shadow-sm transition',
@@ -92,7 +92,7 @@
     <div v-if="scanOpen" class="absolute inset-0 z-10 flex items-center justify-center bg-slate-950/80 p-6">
       <div class="w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl">
         <div class="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-          <b>QR 스캔</b>
+          <b>바코드 스캔</b>
           <button type="button" @click="scanOpen = false" class="flex h-8 w-8 items-center justify-center rounded-md hover:bg-slate-100">
             <XIcon class="h-5 w-5" />
           </button>
@@ -107,7 +107,7 @@
           <div class="absolute inset-8 rounded-lg border-2 border-blue-400" />
         </div>
         <div class="space-y-3 p-4">
-          <p class="text-[28px] font-semibold text-slate-600">QR 코드를 스캔하세요. 데모 스캔은 UNIT-12B를 선택합니다.</p>
+          <p class="text-[28px] font-semibold text-slate-600">바코드를 스캔하세요. 데모 스캔은 UNIT-12B를 선택합니다.</p>
           <button type="button" @click="completeQrScan" class="h-11 w-full rounded-lg bg-blue-600 font-bold text-white hover:bg-blue-700">데모 스캔 완료</button>
         </div>
       </div>

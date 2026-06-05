@@ -1,5 +1,5 @@
 <template>
-  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[720px]' : 'max-w-[1300px]'">
+  <ModalShell :onClose="onClose" :class-name="isManual ? 'max-w-[1440px]' : 'max-w-[1300px]'">
     <div class="shrink-0 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/50 p-8">
       <div class="flex items-center gap-6">
         <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-200">
@@ -15,7 +15,7 @@
     </div>
 
     <div v-if="isManual" class="min-h-0 flex-1 overflow-hidden bg-slate-50 p-6">
-      <section class="mx-auto flex h-full max-w-xl flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
+      <section class="mx-auto flex h-full max-w-[1152px] flex-col overflow-hidden rounded-xl border border-slate-200 bg-white p-5 shadow-sm">
         <div class="mb-5 border-b-2 border-blue-600 pb-3">
           <h3 class="text-[40px] font-black text-slate-950">수동조작</h3>
           <p class="mt-1 text-[28px] font-bold text-red-600">GENi 연결 장애 시에만 사용</p>
@@ -23,14 +23,14 @@
 
         <label class="mb-4 block">
           <span class="mb-2 block text-[28px] font-black text-slate-800">작업 부서 <b class="text-red-500">*</b></span>
-          <select v-model="team" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" @change="setTeam(team)">
+          <select v-model="team" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" @change="setTeam(team)">
             <option v-for="option in MOCK_TEAMS" :key="option" :value="option">{{ option }}</option>
           </select>
         </label>
 
         <label class="mb-4 block">
           <span class="mb-2 block text-[28px] font-black text-slate-800">작업요청사유 <b class="text-red-500">*</b></span>
-          <select v-model="manualReason" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+          <select v-model="manualReason" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
             <option value="" disabled>작업요청사유 선택</option>
             <option v-for="reason in manualReasons" :key="reason" :value="reason">{{ reason }}</option>
           </select>
@@ -63,7 +63,7 @@
             <span>작업상태</span>
             <span>상세</span>
           </div>
-          <div class="h-full max-h-[220px] overflow-y-auto bg-white">
+          <div class="h-full max-h-[440px] overflow-y-auto bg-white">
             <div v-if="!manualPanelsLoaded" class="flex h-32 items-center justify-center text-[28px] font-bold text-slate-500">
               검색 버튼을 눌러 패널 목록을 불러오세요.
             </div>
@@ -116,7 +116,7 @@
             v-if="list.length === 0"
             class="flex h-full items-center justify-center rounded-lg border-2 border-dashed border-slate-300 bg-white px-6 text-center text-[28px] font-bold text-slate-500"
           >
-            QR 스캔 후 대상 목록이 표시됩니다.
+            바코드 스캔 후 대상 목록이 표시됩니다.
           </div>
           <button
             v-else
@@ -139,8 +139,8 @@
               @change="toggleSelected(item.id)"
             />
             <div class="min-w-0 flex-1">
-              <div :class="['truncate text-[36px] font-black', selectedIds.includes(item.id) && !isStart ? 'text-red-600' : 'text-slate-950']">{{ item.unitId }}</div>
-              <div class="truncate text-[24px] font-bold text-slate-500">{{ item.equipName }}</div>
+              <div :class="['truncate text-[26px] font-black', selectedIds.includes(item.id) && !isStart ? 'text-red-600' : 'text-slate-950']">{{ item.unitId }}</div>
+              <div class="truncate text-[18px] font-bold text-slate-500">{{ item.equipName }}</div>
             </div>
             <StatusBadge :status="item.opType.replace(' ', '_')" :blink="item.opType === 'KEY ALERT'" />
           </button>
@@ -154,7 +154,7 @@
             @click="openQrScanner"
           >
             <QrCodeIcon class="h-6 w-6" />
-            QR 스캔
+            바코드 스캔
           </button>
         </div>
       </section>
@@ -164,21 +164,21 @@
 
         <label class="mb-5 block rounded-lg border border-slate-200 bg-slate-50 p-3">
           <span class="mb-2 block text-[28px] font-black text-slate-800">팀 선택 <b class="text-red-500">*</b></span>
-          <select v-model="team" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" @change="setTeam(team)">
+          <select v-model="team" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" @change="setTeam(team)">
             <option v-for="option in MOCK_TEAMS" :key="option" :value="option">{{ option }}</option>
           </select>
         </label>
 
         <label class="mb-5 block rounded-lg border border-slate-200 bg-slate-50 p-3">
           <span class="mb-2 block text-[28px] font-black text-slate-800">책임자 <b class="text-red-500">*</b></span>
-          <select v-model="supervisor" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+          <select v-model="supervisor" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
             <option v-for="option in teamInfo.supervisors" :key="option" :value="option">{{ option }}</option>
           </select>
         </label>
 
         <label class="block rounded-lg border border-slate-200 bg-slate-50 p-3">
           <span class="mb-2 block text-[28px] font-black text-slate-800">작업자 <b class="text-red-500">*</b></span>
-          <select v-model="worker" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+          <select v-model="worker" style="font-size:32px" class="h-12 w-full rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
             <option v-for="option in teamInfo.workers" :key="option" :value="option">{{ option }}</option>
           </select>
         </label>
@@ -222,7 +222,7 @@
       <div class="w-[min(560px,90vw)] rounded-xl border border-slate-200 bg-white shadow-2xl">
         <div class="flex items-center justify-between border-b border-slate-200 px-5 py-4">
           <div>
-            <h3 class="text-[40px] font-black text-slate-950">QR 스캔</h3>
+            <h3 class="text-[40px] font-black text-slate-950">바코드 스캔</h3>
             <p class="text-[28px] font-bold text-slate-500">Red Tag를 카메라 영역에 맞춰주세요.</p>
           </div>
           <button type="button" class="rounded-lg px-3 py-2 text-[28px] font-black text-slate-500 hover:bg-slate-100" @click="qrScannerOpen = false">닫기</button>
@@ -311,7 +311,11 @@ const isComplete = computed(() => props.mode === 'complete')
 const isManual = computed(() => props.mode === 'manual')
 const usesBarcode = computed(() => isStart.value || isComplete.value)
 const qrScannerOpen = ref(false)
-const scannedItems = ref<Operation[]>([])
+const scannedItems = ref<Operation[]>(
+  props.mode === 'complete'
+    ? props.operations.filter((op) => isProgress(op.status))
+    : []
+)
 const manualReason = ref('')
 const manualSearch = ref('')
 const manualPanelsLoaded = ref(false)
@@ -325,9 +329,9 @@ const modalTitle = computed(() => {
 })
 
 const modalSubtitle = computed(() => {
-  if (isStart.value) return 'QR/Red Tag -> GENi -> DB 저장 -> Hardware ON'
+  if (isStart.value) return '바코드/Red Tag -> GENi -> DB 저장 -> Hardware ON'
   if (isManual.value) return 'EMERGENCY ONLY: GENi 연결 장애 시 사용'
-  return 'QR/Red Tag -> DB 검증 -> Hardware OFF'
+  return '바코드/Red Tag -> DB 검증 -> Hardware OFF'
 })
 
 const listTitle = computed(() => {
@@ -354,12 +358,13 @@ const selectedClass = computed(() => {
 })
 
 const list = computed<Operation[]>(() => {
-  if (usesBarcode.value) return scannedItems.value
+  if (isComplete.value) {
+    const progress = props.operations.filter((op) => isProgress(op.status))
+    return progress.length > 0 ? progress : fallbackOperations(5)
+  }
+  if (isStart.value) return scannedItems.value
   if (isManual.value) return manualPanelsLoaded.value ? filteredManualPanels.value : []
-  const progress = props.operations.filter((operation) => isProgress(operation.status))
-  if (progress.length > 0) return progress
-
-  return fallbackOperations(isStart.value ? 7 : 5)
+  return fallbackOperations(7)
 })
 
 const manualPanels = computed(() => fallbackOperations(MOCK_KEY_STATUS.length))
@@ -387,7 +392,9 @@ const fallbackOperations = (count: number) => MOCK_KEY_STATUS.slice(0, count).ma
   } as Operation))
 
 const selectedIds = ref<number[]>(
-  usesBarcode.value ? [] : [list.value[0]?.id ?? 0].filter(Boolean),
+  props.mode === 'complete'
+    ? props.operations.filter((op) => isProgress(op.status)).map((op) => op.id)
+    : usesBarcode.value ? [] : [list.value[0]?.id ?? 0].filter(Boolean),
 )
 
 const team = ref(MOCK_TEAMS[0])
@@ -423,15 +430,19 @@ const loadManualPanels = () => {
 }
 
 const completeQrScan = () => {
-  const source = isComplete.value && props.operations.some((operation) => isProgress(operation.status))
-    ? props.operations.filter((operation) => isProgress(operation.status))
-    : fallbackOperations(MOCK_KEY_STATUS.length)
+  if (isComplete.value) {
+    const next = list.value.find((item) => !selectedIds.value.includes(item.id))
+    if (next) selectedIds.value = [...selectedIds.value, next.id]
+    qrScannerOpen.value = false
+    return
+  }
+
+  const source = fallbackOperations(MOCK_KEY_STATUS.length)
   const next = source.find((item) => !scannedItems.value.some((scanned) => scanned.unitId === item.unitId))
   if (!next) {
     qrScannerOpen.value = false
     return
   }
-
   scannedItems.value = [...scannedItems.value, next]
   selectedIds.value = [...new Set([...selectedIds.value, next.id])]
   qrScannerOpen.value = false

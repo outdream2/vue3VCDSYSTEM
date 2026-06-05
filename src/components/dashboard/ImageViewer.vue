@@ -15,6 +15,7 @@ interface AlertPanel {
   id: number
   status?: string
   description?: string
+  equipName?: string
 }
 
 // Define props with TypeScript types and default values matching React
@@ -69,8 +70,9 @@ defineEmits<{
         <span class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-red-500 text-white shadow-[0_0_0_8px_rgba(239,68,68,0.22)]">
           <AlertTriangle class="h-7 w-7" />
         </span>
-        <span class="min-w-0 truncate font-mono tracking-wide">
-          {{ panel.description || `PANEL-${String(panel.id).padStart(2, '0')}` }}
+        <span class="min-w-0 font-mono tracking-wide">
+          <span class="font-black">{{ panel.description || `PANEL-${String(panel.id).padStart(2, '0')}` }}</span>
+          <span v-if="panel.equipName" class="ml-3 opacity-75">{{ panel.equipName }}</span>
         </span>
         <span class="ml-auto shrink-0 rounded-md border border-emerald-300/25 bg-emerald-400/15 px-4 py-1 text-[18px] font-black text-emerald-200">
           {{ panel.status || 'ON' }}

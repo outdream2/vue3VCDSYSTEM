@@ -78,15 +78,17 @@
     </aside>
   </div>
 
-  <OperationModal v-if="modal === 'start'" mode="start" :operations="operations" @close="modal = null" @confirm="startOperations" />
-  <OperationModal v-if="modal === 'complete'" mode="complete" :operations="operations" @close="modal = null" @confirm="finishOperations" />
-  <OperationModal v-if="modal === 'manual'" mode="manual" :operations="operations" @close="modal = null" @confirm="manualOperations" />
-  <HistoryModal v-if="modal === 'history'" :operations="operations" @close="modal = null" />
-  <HistoryModal v-if="modal === 'activity'" :operations="operations" @close="modal = null" />
+  <Teleport to="body">
+    <OperationModal v-if="modal === 'start'" mode="start" :operations="operations" @close="modal = null" @confirm="startOperations" />
+    <OperationModal v-if="modal === 'complete'" mode="complete" :operations="operations" @close="modal = null" @confirm="finishOperations" />
+    <OperationModal v-if="modal === 'manual'" mode="manual" :operations="operations" @close="modal = null" @confirm="manualOperations" />
+    <HistoryModal v-if="modal === 'history'" :operations="operations" @close="modal = null" />
+    <HistoryModal v-if="modal === 'activity'" :operations="operations" @close="modal = null" />
+  </Teleport>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, markRaw, watch, onMounted, onUnmounted } from 'vue'
+import { ref, computed, markRaw, defineOptions, watch, onMounted, onUnmounted } from 'vue'
 import { Bell, CheckCircle, Hand as HandIcon, History as HistoryIcon, Play, Radio, Server, ShieldCheck } from 'lucide-vue-next'
 
 // API Network Core Hooks and Endpoint Interfaces
@@ -112,6 +114,8 @@ import OperationModal from '../components/modals/OperationModal.vue'
 import { INITIAL_OPERATIONS } from '../data/operations'
 import type { Operation } from '../types'
 
+defineOptions({ name: 'Dashboard' })
+
 // Typing Constraints defining available layout dialog variants
 type ModalType = 'start' | 'complete' | 'manual' | 'history' | 'activity' | null
 type CameraPosition = { x: number; z: number; rotation: number }
@@ -127,7 +131,7 @@ const sequencePanelIds = ref<number[]>([])
 const sequenceId = ref(0)
 const activePanels = ref<ActivePanel[]>([])
 const isOperationActive = ref(false)
-const cameraPosition = ref<CameraPosition>({ x: -6, z: 0, rotation: 0 })
+const cameraPosition = ref<CameraPosition>({ x: -9, z: 0, rotation: 0 })
 const actionIcons = {
   start: markRaw(Play),
   complete: markRaw(CheckCircle),
@@ -204,19 +208,27 @@ const manualOperations = async (selectedOperations: Operation[], worker: string,
 }
 
 const triggerHardware = async (selectedOperations: Operation[], status: 'ON' | 'OFF') => {
-  const panelIds = selectedOperations.map((op) => op.panelId)
-  const panels = selectedOperations.map((op) => ({
-    id: op.panelId,
-    status,
-    description: op.unitId,
-  }))
-
-  await setActivePanels(panels)
-  lastActivePanelsSerialized.value = JSON.stringify(panels)
-  sequencePanelIds.value = panelIds
-  activePanels.value = panels
-  sequenceId.value += 1
-  isOperationActive.value = status === 'ON'
+  if (status === 'ON') {
+    const panels = selectedOperations.map((op) => ({
+      id: op.panelId,
+      status,
+      description: op.unitId,
+      equipName: op.equipName,
+    }))
+    await setActivePanels(panels)
+    const panelIds = selectedOperations.map((op) => op.panelId)
+    lastActivePanelsSerialized.value = JSON.stringify(panels)
+    sequencePanelIds.value = panelIds
+    activePanels.value = panels
+    sequenceId.value += 1
+    isOperationActive.value = true
+  } else {
+    await clearActivePanels()
+    lastActivePanelsSerialized.value = '[]'
+    sequencePanelIds.value = []
+    activePanels.value = []
+    isOperationActive.value = false
+  }
 }
 
 const saveOperationRecords = async (selectedOperations: Operation[], worker: string, team: string, notes: string) => {
@@ -237,16 +249,12 @@ const saveOperationRecords = async (selectedOperations: Operation[], worker: str
 const finishOperations = async (selectedOperations: Operation[]) => {
   await triggerHardware(selectedOperations, 'OFF')
   await completeOperations(selectedOperations.map((op) => op.id))
-  await clearActivePanels()
-  lastActivePanelsSerialized.value = '[]'
-  sequencePanelIds.value = []
-  activePanels.value = []
   await refreshOperations()
 }
 
 // Clears cached tracking segments cleanly upon visual loop sequence completion
 const handleSequenceDone = () => {
-  sequencePanelIds.value = []
+  // 시퀀스 애니메이션 완료 — 하이라이트는 조작완료 시까지 유지
 }
 
 const handleCameraUpdate = (position: CameraPosition) => {

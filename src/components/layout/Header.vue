@@ -4,7 +4,7 @@
     <div class="flex min-w-0 flex-1 items-center gap-6 px-8 py-2">
       <img src="/koen_logo.png" alt="KOEN" class="h-[38%] w-auto object-contain shrink-0 mt-6" />
       <div class="flex min-w-0 flex-1 flex-col items-center justify-center text-center">
-        <h1 class="text-[88px] font-black text-slate-950" style="font-weight:900;">영동 1호기 <span class="text-red-600" style="font-weight:900;">고압차단기반</span> 위치안내 시스템</h1>
+        <h1 class="text-[88px] font-black text-slate-950 mt-8" style="font-weight:900;">영동 1호기 <span class="text-red-600" style="font-weight:900;">고압차단기반</span> 위치안내 시스템</h1>
       </div>
     </div>
 

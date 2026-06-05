@@ -72,7 +72,9 @@ function readBody(req) {
 function toPanel(item) {
   const id = Number(item?.id)
   if (Number.isNaN(id) || id < 1 || id > 48) return null
-  return { id, status: String(item.status ?? ''), description: String(item.description ?? '') }
+  const panel = { id, status: String(item.status ?? ''), description: String(item.description ?? '') }
+  if (item.equipName) panel.equipName = String(item.equipName)
+  return panel
 }
 
 async function handleApi(req, res, url) {

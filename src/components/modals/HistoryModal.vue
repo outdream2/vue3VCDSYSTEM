@@ -1,5 +1,5 @@
 <template>
-  <ModalShell :onClose="onClose" class-name="max-w-[1300px]">
+  <ModalShell :onClose="onClose" class-name="max-w-[2600px]">
     <div class="shrink-0 border-b border-slate-100 bg-gradient-to-r from-slate-50 to-blue-50/50 p-8">
       <div class="flex items-center gap-6">
         <div class="flex h-20 w-20 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 text-white shadow-lg shadow-blue-200">
@@ -14,10 +14,10 @@
     
     <div class="min-h-0 flex-1 bg-slate-50 p-6">
       <div class="mb-5 flex items-center gap-4 rounded-xl border border-slate-200 bg-white p-4 shadow-sm">
-        <select class="h-[88px] rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
+        <select style="font-size:32px" class="h-12 rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100">
           <option>전체 상태</option>
         </select>
-        <input type="date" class="h-[88px] rounded-lg border-2 border-blue-200 bg-blue-50 px-4 text-[28px] font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" />
+        <input type="date" style="font-size:32px" class="h-12 rounded-lg border-2 border-blue-200 bg-blue-50 px-4 font-black text-slate-950 shadow-sm outline-none transition focus:border-blue-600 focus:bg-white focus:ring-4 focus:ring-blue-100" />
         <div class="ml-auto text-[28px] font-bold text-slate-500">{{ rows.length }}건</div>
       </div>
       
