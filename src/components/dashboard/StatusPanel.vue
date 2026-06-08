@@ -11,7 +11,7 @@
       </span>
     </div>
     
-    <div class="grid shrink-0 grid-cols-[minmax(0,1fr)_100px_110px_70px] items-center gap-2 border-b border-slate-100 bg-slate-50 px-3 py-2 text-[22px] font-black tracking-wide text-slate-400">
+    <div class="grid shrink-0 grid-cols-[minmax(0,1fr)_100px_110px_70px] items-center gap-2 border-b border-slate-100 bg-slate-50 px-3 py-2 text-[17px] font-black tracking-wide text-slate-400">
       <span>기기번호</span>
       <span>키상태</span>
       <span class="text-center">작업상태</span>
@@ -28,29 +28,29 @@
         ]"
       >
         <div class="min-w-0">
-          <div class="truncate text-[24px] font-black leading-tight text-blue-700">
+          <div class="truncate text-[19px] font-black leading-tight text-blue-700">
             {{ operation.unitId }}
           </div>
-          <div class="mt-0.5 truncate text-[20px] font-bold leading-tight text-slate-500">
+          <div class="mt-0.5 truncate text-[16px] font-bold leading-tight text-slate-500">
             {{ operation.panelName || operation.equipName }}
           </div>
         </div>
 
         <div class="flex min-w-0 justify-start overflow-hidden">
-          <span :class="['inline-flex max-w-full items-center truncate rounded px-1.5 py-0.5 text-[20px] font-black leading-none', keyStatusClass(operation.opType)]">
+          <span :class="['inline-flex max-w-full items-center truncate rounded px-1.5 py-0.5 text-[16px] font-black leading-none', keyStatusClass(operation.opType)]">
             {{ shortKeyStatus(operation.opType) }}
           </span>
         </div>
 
         <div class="flex min-w-0 justify-center overflow-hidden">
-          <span class="inline-flex max-w-full items-center truncate rounded bg-blue-100 px-1.5 py-0.5 text-[20px] font-black leading-none text-blue-600">
+          <span class="inline-flex max-w-full items-center truncate rounded bg-blue-100 px-1.5 py-0.5 text-[16px] font-black leading-none text-blue-600">
             {{ operation.status }}
           </span>
         </div>
 
         <button
           type="button"
-          class="flex h-10 w-14 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[20px] font-black text-blue-600 transition-colors hover:bg-blue-100"
+          class="flex h-10 w-14 items-center justify-center rounded border border-blue-100 bg-blue-50 text-[16px] font-black text-blue-600 transition-colors hover:bg-blue-100"
         >
           상세
         </button>
